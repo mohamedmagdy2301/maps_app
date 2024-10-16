@@ -7,7 +7,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+import 'package:openstreetmap/core/contants.dart';
 import 'package:openstreetmap/core/determine_position.dart';
+import 'package:openstreetmap/core/shared_preferences_manager.dart';
 import 'package:openstreetmap/screens/history_screen.dart';
 import 'package:openstreetmap/widgets/appbar_home.dart';
 import 'package:openstreetmap/widgets/destination_data_widget.dart';
@@ -24,7 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Position? currentLocation;
   List<LatLng> routePoints = [];
   List<Marker> markers = [];
-  List<List<dynamic>> historyMarkers = [];
+  List<List<dynamic>> historyMarkers =
+      SharedPreferencesManager.getData(key: historyKey) ?? [];
+  List<dynamic> coords = [];
   double durationRoute = 0;
   double distanceRoute = 0;
   String destinationName = "";
@@ -60,8 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> getRouteFromApi(LatLng destination) async {
-    const String orsApiKey =
-        '5b3ce3597851110001cf6248beb9203a7f984873a325612ddaa21c24';
     if (currentLocation == null) return;
 
     var start = LatLng(currentLocation!.latitude, currentLocation!.longitude);
@@ -71,23 +73,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final response = await http.get(
       Uri.parse(
-          'https://api.openrouteservice.org/v2/directions/foot-walking?api_key=$orsApiKey&start=${start.longitude},${start.latitude}&end=${destination.longitude},${destination.latitude}'),
+          '$orsApiUrl?api_key=$orsApiKey&start=${start.longitude},${start.latitude}&end=${destination.longitude},${destination.latitude}'),
     );
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final List<dynamic> coords =
-          data['features'][0]['geometry']['coordinates'];
-      durationRoute =
-          data['features'][0]['properties']['segments'][0]["duration"];
-      distanceRoute =
-          data['features'][0]['properties']['segments'][0]["distance"];
+      final data = json.decode(response.body)['features'][0];
+      coords = data['geometry']['coordinates'];
+      durationRoute = data['properties']['segments'][0]["duration"];
+      distanceRoute = data['properties']['segments'][0]["distance"];
 
       setState(
         () {
           routePoints =
               coords.map((coord) => LatLng(coord[1], coord[0])).toList();
           historyMarkers.add([destinationName, durationRoute, distanceRoute]);
+          SharedPreferencesManager.setData(
+            key: historyKey,
+            value: historyMarkers,
+          );
           //! for current location and destination marker only
           if (markers.length > 1) markers.removeRange(1, markers.length);
           markers.add(

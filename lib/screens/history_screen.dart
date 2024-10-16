@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:openstreetmap/core/contants.dart';
 import 'package:openstreetmap/core/determine_position.dart';
+import 'package:openstreetmap/core/shared_preferences_manager.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -22,6 +24,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             onPressed: () {
               setState(() {
                 historyMarkers.clear();
+                SharedPreferencesManager.removeData(key: historyKey);
               });
             },
             icon: const Icon(Icons.delete),
