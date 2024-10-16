@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:openstreetmap/core/determine_position.dart';
 import 'package:openstreetmap/widgets/appbar_home.dart';
+import 'package:openstreetmap/widgets/destination_data_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (currentLocation == null) return;
 
     var start = LatLng(currentLocation!.latitude, currentLocation!.longitude);
-    destinationName = "Unknown";
+    destinationName = await getLocationName(destination) ?? "Unknown";
 
     final response = await http.get(
       Uri.parse(
@@ -159,9 +160,11 @@ class _HomeScreenState extends State<HomeScreen> {
           : Column(
               children: [
                 routePoints.isNotEmpty
-                    ? DestinatioDataWidget(
+                    ? DestinationDataWidget(
                         destinationName: destinationName,
-                        distanceRoute: distanceRoute)
+                        distanceRoute: distanceRoute,
+                        durationRoute: durationRoute,
+                      )
                     : const SizedBox(),
                 Expanded(
                   child: FlutterMap(
@@ -210,61 +213,6 @@ class _HomeScreenState extends State<HomeScreen> {
           CupertinoIcons.location_circle_fill,
           color: Colors.blue,
           size: 40,
-        ),
-      ),
-    );
-  }
-}
-
-class DestinatioDataWidget extends StatelessWidget {
-  const DestinatioDataWidget({
-    super.key,
-    required this.destinationName,
-    required this.distanceRoute,
-  });
-
-  final String destinationName;
-  final double distanceRoute;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 10,
-      ),
-      child: SizedBox(
-        height: 80,
-        width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              destinationName,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "المدة: ${(distanceRoute).toStringAsFixed(1)} دقيقة",
-                  style: const TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-                Text(
-                  "المسافة: ${(distanceRoute).toStringAsFixed(0)} متر",
-                  style: const TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-          ],
         ),
       ),
     );
