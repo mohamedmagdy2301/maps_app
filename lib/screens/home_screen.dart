@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -61,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (currentLocation == null) return;
 
     var start = LatLng(currentLocation!.latitude, currentLocation!.longitude);
-    destinationName = await getLocationName(destination) ?? "Unknown";
+    destinationName = "Unknown";
 
     final response = await http.get(
       Uri.parse(
@@ -158,47 +159,9 @@ class _HomeScreenState extends State<HomeScreen> {
           : Column(
               children: [
                 routePoints.isNotEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 10,
-                        ),
-                        child: SizedBox(
-                          height: 80,
-                          width: double.infinity,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                destinationName,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    "المدة: ${(distanceRoute).toStringAsFixed(1)} دقيقة",
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  Text(
-                                    "المسافة: ${(distanceRoute).toStringAsFixed(0)} متر",
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
+                    ? DestinatioDataWidget(
+                        destinationName: destinationName,
+                        distanceRoute: distanceRoute)
                     : const SizedBox(),
                 Expanded(
                   child: FlutterMap(
@@ -244,9 +207,64 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         icon: const Icon(
-          Icons.my_location,
+          CupertinoIcons.location_circle_fill,
           color: Colors.blue,
-          size: 60,
+          size: 40,
+        ),
+      ),
+    );
+  }
+}
+
+class DestinatioDataWidget extends StatelessWidget {
+  const DestinatioDataWidget({
+    super.key,
+    required this.destinationName,
+    required this.distanceRoute,
+  });
+
+  final String destinationName;
+  final double distanceRoute;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 10,
+      ),
+      child: SizedBox(
+        height: 80,
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              destinationName,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "المدة: ${(distanceRoute).toStringAsFixed(1)} دقيقة",
+                  style: const TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                Text(
+                  "المسافة: ${(distanceRoute).toStringAsFixed(0)} متر",
+                  style: const TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

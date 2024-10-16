@@ -32,7 +32,14 @@ class AppBarHome extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         const Spacer(),
-        const Text('الخريطة'),
+        const Text(
+          'الخريطة',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
+        ),
+        const SizedBox(width: 5),
       ],
     );
   }
