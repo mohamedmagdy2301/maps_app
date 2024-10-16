@@ -17,7 +17,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final historyMarkers = ModalRoute.of(context)!.settings.arguments as List;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('History'),
+        title: const Text('السجل'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -34,7 +34,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       body: historyMarkers.isEmpty
           ? const Center(
               child: Text(
-                'No History',
+                'لا توجد سجلات',
                 style: TextStyle(
                   fontSize: 24,
                 ),
@@ -46,33 +46,35 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 return Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'الموقع: ${historyMarkers[index][0]}',
-                        style: const TextStyle(
-                          fontSize: 20,
+                  child: Card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          'الموقع: ${historyMarkers[index][0]}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
-                      ),
-                      Text(
-                        viewDuration(historyMarkers[index][1]),
-                        style: const TextStyle(
-                          fontSize: 18,
+                        Text(
+                          viewDuration(historyMarkers[index][1]),
+                          style: const TextStyle(
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                      Text(
-                        viewDistance(historyMarkers[index][2]),
-                        style: const TextStyle(
-                          fontSize: 18,
+                        Text(
+                          viewDistance(historyMarkers[index][2]),
+                          style: const TextStyle(
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                      const Divider(
-                        color: Colors.black,
-                        thickness: .5,
-                        height: 15,
-                      ),
-                    ],
+                        const Divider(
+                          color: Colors.black,
+                          thickness: .5,
+                          height: 15,
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
