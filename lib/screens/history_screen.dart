@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:openstreetmap/core/contants.dart';
-import 'package:openstreetmap/core/determine_position.dart';
 import 'package:openstreetmap/core/shared_preferences_manager.dart';
+import 'package:openstreetmap/widgets/history_markers_listview.dart';
+import 'package:openstreetmap/widgets/no_there_history_markers.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -32,53 +33,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
         ],
       ),
       body: historyMarkers.isEmpty
-          ? const Center(
-              child: Text(
-                'لا توجد سجلات',
-                style: TextStyle(
-                  fontSize: 24,
-                ),
-              ),
-            )
-          : ListView.builder(
-              itemCount: historyMarkers.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  child: Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'الموقع: ${historyMarkers[index][0]}',
-                          style: const TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                        Text(
-                          viewDuration(historyMarkers[index][1]),
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        Text(
-                          viewDistance(historyMarkers[index][2]),
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        const Divider(
-                          color: Colors.black,
-                          thickness: .5,
-                          height: 15,
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+          ? const NoThereHistoryMarkers()
+          : HistoryMarkersListView(historyMarkers: historyMarkers),
     );
   }
 }
