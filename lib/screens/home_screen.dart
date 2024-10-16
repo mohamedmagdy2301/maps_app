@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:openstreetmap/core/determine_position.dart';
+import 'package:openstreetmap/screens/history_screen.dart';
 import 'package:openstreetmap/widgets/appbar_home.dart';
 import 'package:openstreetmap/widgets/destination_data_widget.dart';
 
@@ -63,7 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
     if (currentLocation == null) return;
 
     var start = LatLng(currentLocation!.latitude, currentLocation!.longitude);
-    destinationName = await getLocationName(destination);
+    Placemark place = await getLocationName(destination);
+    destinationName =
+        '${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}';
 
     final response = await http.get(
       Uri.parse(
@@ -108,36 +112,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  historyRoute() {
-    showAdaptiveDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: const Text('History'),
-          content: historyMarkers.isEmpty
-              ? const Text('No History')
-              : SizedBox(
-                  height: 300,
-                  child: ListView.builder(
-                    itemCount: historyMarkers.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Destination: ${historyMarkers[index][0]}'),
-                          Text('Duration: ${historyMarkers[index][1]}'),
-                          Text('Distance: ${historyMarkers[index][2]}'),
-                          const Divider(),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-        );
-      },
-    );
-  }
-
   @override
   void dispose() {
     mapController.dispose();
@@ -152,7 +126,11 @@ class _HomeScreenState extends State<HomeScreen> {
           clearRoute();
         },
         onPressedHistory: () {
-          historyRoute();
+          Navigator.pushNamed(
+            context,
+            HistoryScreen.routeName,
+            arguments: historyMarkers,
+          );
         },
       ),
       body: currentLocation == null

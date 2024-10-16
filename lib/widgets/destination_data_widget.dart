@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:openstreetmap/core/determine_position.dart';
 
 class DestinationDataWidget extends StatelessWidget {
   const DestinationDataWidget({
@@ -37,13 +38,13 @@ class DestinationDataWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  viewDuration(),
+                  viewDuration(durationRoute),
                   style: const TextStyle(
                     fontSize: 18,
                   ),
                 ),
                 Text(
-                  viewDistance(),
+                  viewDistance(distanceRoute),
                   style: const TextStyle(
                     fontSize: 18,
                   ),
@@ -54,22 +55,5 @@ class DestinationDataWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  viewDistance() {
-    if (distanceRoute > 1000) {
-      return 'المسافة: ${(distanceRoute / 1000).toStringAsFixed(1)} كم';
-    }
-    return 'المسافة: ${(distanceRoute).toStringAsFixed(0)} متر';
-  }
-
-  viewDuration() {
-    if (durationRoute > 60) {
-      if (durationRoute > 3600) {
-        return 'المدة: ${(durationRoute / 3600).toStringAsFixed(1)} ساعة';
-      }
-      return 'المدة: ${(durationRoute / 60).toStringAsFixed(1)} دقيقة';
-    }
-    return 'المدة: ${(durationRoute).toStringAsFixed(0)} ثانية';
   }
 }

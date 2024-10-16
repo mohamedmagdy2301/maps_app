@@ -26,22 +26,33 @@ Future<Position> determinePosition() async {
   return await Geolocator.getCurrentPosition();
 }
 
-Future<String> getLocationName(LatLng position) async {
+Future<Placemark> getLocationName(LatLng position) async {
   // 30.99674449616613,30.56313391804571
 
   final placemarks = await placemarkFromCoordinates(
     position.latitude,
     position.longitude,
   );
-  log(placemarks.toString());
   if (placemarks.isNotEmpty) {
-    final place = placemarks.first;
-    if (place.subAdministrativeArea != null &&
-        place.administrativeArea != null &&
-        place.country != null) {
-      return '${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}';
-    }
-    return 'Unknown Location';
+    log(placemarks.first.toString());
+    return placemarks.first;
   }
-  return 'Unknown Location';
+  return const Placemark(name: 'موقعك الحالي');
+}
+
+viewDistance(distanceRoute) {
+  if (distanceRoute > 1000) {
+    return 'المسافة: ${(distanceRoute / 1000).toStringAsFixed(1)} كم';
+  }
+  return 'المسافة: ${(distanceRoute).toStringAsFixed(0)} متر';
+}
+
+viewDuration(durationRoute) {
+  if (durationRoute > 60) {
+    if (durationRoute > 3600) {
+      return 'المدة: ${(durationRoute / 3600).toStringAsFixed(1)} ساعة';
+    }
+    return 'المدة: ${(durationRoute / 60).toStringAsFixed(1)} دقيقة';
+  }
+  return 'المدة: ${(durationRoute).toStringAsFixed(0)} ثانية';
 }
