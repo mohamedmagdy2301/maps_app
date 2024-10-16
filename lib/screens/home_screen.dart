@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (currentLocation == null) return;
 
     var start = LatLng(currentLocation!.latitude, currentLocation!.longitude);
-    destinationName = await getLocationName(destination) ?? "Unknown";
+    destinationName = await getLocationName(destination);
 
     final response = await http.get(
       Uri.parse(

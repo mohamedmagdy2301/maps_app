@@ -38,39 +38,7 @@ Future<String> getLocationName(LatLng position) async {
         place.country != null) {
       return '${place.locality}, ${place.administrativeArea}, ${place.country}';
     }
-    if (place.locality != null && place.country != null) {
-      return '${place.locality}, ${place.country}';
-    }
-    if (place.administrativeArea != null && place.country != null) {
-      return '${place.administrativeArea}, ${place.country}';
-    }
-    if (place.country != null) {
-      return '${place.country}';
-    }
-    if (place.locality != null) {
-      return '${place.locality}';
-    }
-    if (place.administrativeArea != null) {
-      return '${place.administrativeArea}';
-    }
-    if (place.subLocality != null) {
-      return '${place.subLocality}';
-    }
-    if (place.subAdministrativeArea != null) {
-      return '${place.subAdministrativeArea}';
-    }
-    if (place.subThoroughfare != null) {
-      return '${place.subThoroughfare}';
-    }
-    if (place.thoroughfare != null) {
-      return '${place.thoroughfare}';
-    }
-    if (place.name != null) {
-      return '${place.name}';
-    }
-    if (place.postalCode != null) {
-      return '${place.postalCode}';
-    }
+    return 'Unknown Location';
   }
   return 'Unknown Location';
 }
