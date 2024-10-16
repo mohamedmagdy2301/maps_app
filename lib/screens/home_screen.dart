@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (currentLocation == null) return;
 
     var start = LatLng(currentLocation!.latitude, currentLocation!.longitude);
-    destinationName = await getLocationName(destination);
+    destinationName = await getLocationName(destination) ?? "Unknown";
 
     final response = await http.get(
       Uri.parse(
@@ -234,16 +234,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: IconButton(
         onPressed: () {
           if (currentLocation != null) {
             mapController.move(
               LatLng(currentLocation!.latitude, currentLocation!.longitude),
-              15.0,
+              15,
             );
           }
         },
-        child: const Icon(Icons.my_location),
+        icon: const Icon(
+          Icons.my_location,
+          color: Colors.blue,
+          size: 60,
+        ),
       ),
     );
   }
