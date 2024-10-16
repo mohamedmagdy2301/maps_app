@@ -10,7 +10,6 @@ class AppBarHome extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('Maps'),
       actions: [
         IconButton(
           onPressed: onPressedHistory,
@@ -32,6 +31,8 @@ class AppBarHome extends StatelessWidget implements PreferredSizeWidget {
             CupertinoIcons.clear,
           ),
         ),
+        const Spacer(),
+        const Text('الخريطة'),
       ],
     );
   }

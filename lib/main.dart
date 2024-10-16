@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:openstreetmap/screens/search_screen.dart';
 import 'package:openstreetmap/screens/home_screen.dart';
+import 'package:openstreetmap/screens/search_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Maps',
+      title: 'الخريطة',
       initialRoute: '/',
       routes: {
         '/': (context) => const HomeScreen(),
