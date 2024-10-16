@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -31,12 +33,13 @@ Future<String> getLocationName(LatLng position) async {
     position.latitude,
     position.longitude,
   );
+  log(placemarks.toString());
   if (placemarks.isNotEmpty) {
     final place = placemarks.first;
-    if (place.locality != null &&
+    if (place.subAdministrativeArea != null &&
         place.administrativeArea != null &&
         place.country != null) {
-      return '${place.locality}, ${place.administrativeArea}, ${place.country}';
+      return '${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.country}';
     }
     return 'Unknown Location';
   }
