@@ -125,9 +125,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarHome(
-        onPressedClear: () {
-          clearRoute();
-        },
         onPressedHistory: () {
           Navigator.pushNamed(
             context,
@@ -145,6 +142,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         destinationName: destinationName,
                         distanceRoute: distanceRoute,
                         durationRoute: durationRoute,
+                        onPressedClear: () {
+                          clearRoute();
+                        },
                       )
                     : const SizedBox(),
                 Expanded(

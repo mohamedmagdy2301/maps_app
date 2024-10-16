@@ -8,10 +8,12 @@ class DestinationDataWidget extends StatelessWidget {
     required this.destinationName,
     required this.distanceRoute,
     required this.durationRoute,
+    this.onPressedClear,
   });
 
   final String destinationName;
   final double distanceRoute, durationRoute;
+  final Function()? onPressedClear;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +29,27 @@ class DestinationDataWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              destinationName,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w900,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Spacer(),
+                Text(
+                  destinationName,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const Spacer(),
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: onPressedClear,
+                  icon: const Icon(
+                    CupertinoIcons.clear,
+                    size: 27,
+                  ),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

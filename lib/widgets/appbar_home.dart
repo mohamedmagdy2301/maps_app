@@ -3,20 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:openstreetmap/screens/search_screen.dart';
 
 class AppBarHome extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarHome({super.key, this.onPressedClear, this.onPressedHistory});
-  final Function()? onPressedClear;
+  const AppBarHome({super.key, this.onPressedHistory});
 
   final Function()? onPressedHistory;
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      actions: [
-        IconButton(
-          onPressed: onPressedHistory,
-          icon: const Icon(
-            Icons.history,
-          ),
+      centerTitle: true,
+      title: const Text(
+        'الخريطة',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 22,
         ),
+      ),
+      leading: IconButton(
+        onPressed: onPressedHistory,
+        icon: const Icon(
+          Icons.history,
+        ),
+      ),
+      actions: [
         IconButton(
           onPressed: () {
             Navigator.pushNamed(context, SearchScreen.routeName);
@@ -25,21 +32,6 @@ class AppBarHome extends StatelessWidget implements PreferredSizeWidget {
             CupertinoIcons.search,
           ),
         ),
-        IconButton(
-          onPressed: onPressedClear,
-          icon: const Icon(
-            CupertinoIcons.clear,
-          ),
-        ),
-        const Spacer(),
-        const Text(
-          'الخريطة',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-          ),
-        ),
-        const SizedBox(width: 5),
       ],
     );
   }
