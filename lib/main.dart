@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:openstreetmap/screens/history_screen.dart';
 import 'package:openstreetmap/screens/home_screen.dart';
 import 'package:openstreetmap/screens/search_screen.dart';
 
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const HomeScreen(),
         SearchScreen.routeName: (context) => const SearchScreen(),
+        HistoryScreen.routeName: (context) => const HistoryScreen(),
       },
     );
   }
