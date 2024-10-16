@@ -3,7 +3,7 @@ import 'package:openstreetmap/screens/history_screen.dart';
 import 'package:openstreetmap/screens/home_screen.dart';
 import 'package:openstreetmap/screens/search_screen.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
