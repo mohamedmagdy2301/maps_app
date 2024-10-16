@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:openstreetmap/core/shared_preferences_manager.dart';
 import 'package:openstreetmap/screens/history_screen.dart';
 import 'package:openstreetmap/screens/home_screen.dart';
 import 'package:openstreetmap/screens/search_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesManager.sharedPreferencesInitialize();
   runApp(const MyApp());
 }
 
