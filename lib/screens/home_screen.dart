@@ -143,13 +143,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         currentLocation!.latitude,
                         currentLocation!.longitude,
                       ),
-                      initialZoom: 15,
+                      initialZoom: 16,
+                      keepAlive: true,
                       onTap: (tapPosition, point) => getRouteFromApi(point),
                     ),
                     children: [
                       TileLayer(
-                        urlTemplate:
-                            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                        urlTemplate: urlTemplate,
                         subdomains: const ['a', 'b', 'c'],
                       ),
                       MarkerLayer(
