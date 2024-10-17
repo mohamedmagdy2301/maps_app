@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geocoding/geocoding.dart';
@@ -46,8 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
         currentLocation = userLocation;
         markers.add(
           Marker(
-            width: 80.0,
-            height: 80.0,
             point: LatLng(
               userLocation.latitude,
               userLocation.longitude,
@@ -95,12 +92,13 @@ class _HomeScreenState extends State<HomeScreen> {
           if (markers.length > 1) markers.removeRange(1, markers.length);
           markers.add(
             Marker(
-              width: 80.0,
-              height: 80.0,
               point: destination,
               alignment: Alignment.center,
-              child:
-                  const Icon(Icons.location_on, color: Colors.red, size: 40.0),
+              child: const Icon(
+                Icons.location_on,
+                color: Colors.red,
+                size: 30,
+              ),
             ),
           );
         },
@@ -137,16 +135,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
-                routePoints.isNotEmpty
-                    ? DestinationDataWidget(
-                        destinationName: destinationName,
-                        distanceRoute: distanceRoute,
-                        durationRoute: durationRoute,
-                        onPressedClear: () {
-                          clearRoute();
-                        },
-                      )
-                    : const SizedBox(),
                 Expanded(
                   child: FlutterMap(
                     mapController: mapController,
@@ -181,20 +169,79 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-      floatingActionButton: IconButton(
-        onPressed: () {
-          if (currentLocation != null) {
-            mapController.move(
-              LatLng(currentLocation!.latitude, currentLocation!.longitude),
-              15,
-            );
-          }
-        },
-        icon: const Icon(
-          CupertinoIcons.location_circle_fill,
-          color: Colors.blue,
-          size: 40,
-        ),
+      floatingActionButton: Column(
+        children: [
+          const SizedBox(
+            height: 100,
+          ),
+          routePoints.isNotEmpty
+              ? FloatingActionButton(
+                  heroTag: 'btn1',
+                  mini: true,
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                    showAdaptiveDialog(
+                      context: context,
+                      builder: (_) {
+                        return AlertDialog(
+                          title: const Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text("اختر الموقع"),
+                            ],
+                          ),
+                          alignment: Alignment.centerRight,
+                          actionsAlignment: MainAxisAlignment.end,
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                clearRoute();
+                                Navigator.pop(context);
+                              },
+                              child: const Text("مسح المسار"),
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("رجوع")),
+                          ],
+                          content: DestinationDataWidget(
+                            destinationName: destinationName,
+                            distanceRoute: distanceRoute,
+                            durationRoute: durationRoute,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: const Icon(
+                    Icons.location_on,
+                    color: Colors.red,
+                    size: 20,
+                  ),
+                )
+              : const SizedBox(),
+          const Spacer(),
+          FloatingActionButton(
+            heroTag: 'currentLocation',
+            backgroundColor: Colors.white,
+            mini: true,
+            onPressed: () {
+              if (currentLocation != null) {
+                mapController.move(
+                  LatLng(currentLocation!.latitude, currentLocation!.longitude),
+                  15,
+                );
+              }
+            },
+            child: const Icon(
+              Icons.my_location,
+              color: Colors.blue,
+              size: 20,
+            ),
+          ),
+        ],
       ),
     );
   }

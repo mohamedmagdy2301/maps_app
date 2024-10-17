@@ -18,7 +18,6 @@ class HistoryMarkersListView extends StatelessWidget {
         keepScrollOffset: true,
         initialScrollOffset: historyMarkers.length * 100,
       ),
-      reverse: true,
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
