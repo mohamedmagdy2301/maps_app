@@ -13,6 +13,12 @@ class HistoryMarkersListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: historyMarkers.length,
+      // ! to keep the markers is last on the screen
+      controller: ScrollController(
+        keepScrollOffset: true,
+        initialScrollOffset: historyMarkers.length * 100,
+      ),
+      reverse: true,
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
