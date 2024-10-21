@@ -11,14 +11,12 @@ part 'get_loction_state.dart';
 
 class GetLoctionCubit extends Cubit<GetLoctionState> {
   GetLoctionCubit() : super(GetLoctionInitial());
+  final MapController mapController = MapController();
 
   Position? currentLocation;
   List<Marker> markers = [];
 
   Future<void> getCurrentLocation() async {
-    Future.delayed(const Duration(seconds: 3));
-    emit(GetLoctionInitial());
-
     Position userLocation = await determinePosition();
     currentLocation = userLocation;
     markers.add(

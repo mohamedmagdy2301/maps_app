@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:openstreetmap/core/determine_position.dart';
+import 'package:openstreetmap/core/cubit/get_loction/get_loction_cubit.dart';
 
 class HistoryMarkersListView extends StatelessWidget {
   const HistoryMarkersListView({

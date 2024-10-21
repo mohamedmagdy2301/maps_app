@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:openstreetmap/core/cubit/route/route_cubit.dart';
+import 'package:openstreetmap/screens/history_screen.dart';
 import 'package:openstreetmap/screens/search_screen.dart';
 
 class AppBarHome extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarHome({super.key, this.onPressedHistory});
+  const AppBarHome({super.key});
 
-  final Function()? onPressedHistory;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -18,7 +20,13 @@ class AppBarHome extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       leading: IconButton(
-        onPressed: onPressedHistory,
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            HistoryScreen.routeName,
+            arguments: context.read<RouteCubit>().historyMarkers,
+          );
+        },
         icon: const Icon(
           Icons.history,
         ),
