@@ -15,7 +15,8 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    final historyMarkers = ModalRoute.of(context)!.settings.arguments as List;
+    final List historyMarkers =
+        ModalRoute.of(context)!.settings.arguments as List;
     return Scaffold(
       appBar: AppBar(
         title: const Text('السجل'),

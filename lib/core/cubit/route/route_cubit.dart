@@ -6,6 +6,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:openstreetmap/core/contants.dart';
@@ -25,9 +26,10 @@ class RouteCubit extends Cubit<RouteState> {
   double distance = 0;
   String destinationName = "";
   LatLng? pointDestination;
+  double zoomLevel = 15;
 
   Future<void> getDestinationRoute(
-    LatLng currentLocation,
+    Position currentLocation,
     LatLng destination,
     List<Marker> markers,
     MapController mapController,
@@ -36,14 +38,6 @@ class RouteCubit extends Cubit<RouteState> {
     pointDestination = destination;
     if (markers.length > 1) markers.removeRange(1, markers.length);
 
-    // double midLatitude = (currentLocation.latitude + destination.latitude) / 2;
-    // double midLongitude =
-    //     (currentLocation.longitude + destination.longitude) / 2;
-
-    // mapController.move(
-    //   LatLng(midLatitude, midLongitude),
-    //   getZoomLevel(),
-    // );
     markers.add(
       Marker(
         point: destination,
@@ -61,7 +55,7 @@ class RouteCubit extends Cubit<RouteState> {
 
   Future<void> getDiractionesRouteFromApi(
     BuildContext context,
-    LatLng currentLocation,
+    Position currentLocation,
     LatLng destination,
     List<Marker> markers,
     MapController mapController,
@@ -106,7 +100,6 @@ class RouteCubit extends Cubit<RouteState> {
   }
 
   double getZoomLevel() {
-    double zoomLevel;
     if (distance > 350000) {
       zoomLevel = 4.5;
     } else if (distance > 260000) {
@@ -122,29 +115,29 @@ class RouteCubit extends Cubit<RouteState> {
     } else if (distance > 70000) {
       zoomLevel = 7.5;
     } else if (distance > 65000) {
-      zoomLevel = 6;
-    } else if (distance > 60000) {
-      zoomLevel = 6.5;
-    } else if (distance > 55000) {
-      zoomLevel = 7;
-    } else if (distance > 50000) {
-      zoomLevel = 7.5;
-    } else if (distance > 45000) {
       zoomLevel = 8;
-    } else if (distance > 40000) {
+    } else if (distance > 60000) {
       zoomLevel = 8.5;
-    } else if (distance > 35000) {
+    } else if (distance > 55000) {
       zoomLevel = 9;
-    } else if (distance > 30000) {
+    } else if (distance > 50000) {
       zoomLevel = 9.5;
-    } else if (distance > 25000) {
+    } else if (distance > 45000) {
       zoomLevel = 10;
-    } else if (distance > 20000) {
+    } else if (distance > 40000) {
+      zoomLevel = 10.5;
+    } else if (distance > 35000) {
       zoomLevel = 11;
-    } else if (distance > 15000) {
+    } else if (distance > 30000) {
+      zoomLevel = 11.5;
+    } else if (distance > 25000) {
       zoomLevel = 12;
-    } else if (distance > 10000) {
+    } else if (distance > 20000) {
+      zoomLevel = 12.5;
+    } else if (distance > 15000) {
       zoomLevel = 13;
+    } else if (distance > 10000) {
+      zoomLevel = 13.5;
     } else if (distance > 5000) {
       zoomLevel = 14;
     } else {

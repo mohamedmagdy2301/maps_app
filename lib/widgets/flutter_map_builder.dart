@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,11 +20,14 @@ class FlutterMapBuilder extends StatefulWidget {
 
 class _FlutterMapBuilderState extends State<FlutterMapBuilder> {
   double zoom = 15;
+
   @override
   Widget build(BuildContext context) {
     var getLoctionCubit = context.read<GetLoctionCubit>();
     var routeCubit = context.read<RouteCubit>();
     var markers = context.read<GetLoctionCubit>().markers;
+    double midLatitude = getLoctionCubit.currentLocation!.latitude;
+    double midLongitude = getLoctionCubit.currentLocation!.longitude;
     return Stack(
       children: [
         FlutterMap(
@@ -45,6 +46,18 @@ class _FlutterMapBuilderState extends State<FlutterMapBuilder> {
                 point,
                 markers,
                 getLoctionCubit.mapController,
+              );
+
+              midLatitude =
+                  (getLoctionCubit.currentLocation!.latitude + point.latitude) /
+                      2;
+              midLongitude = (getLoctionCubit.currentLocation!.longitude +
+                      point.longitude) /
+                  2;
+
+              getLoctionCubit.mapController.move(
+                LatLng(midLatitude, midLongitude),
+                zoom,
               );
             },
           ),
@@ -75,10 +88,9 @@ class _FlutterMapBuilderState extends State<FlutterMapBuilder> {
                 if (zoom > 2.5) {
                   zoom -= 0.5;
                   getLoctionCubit.mapController.move(
-                    getLoctionCubit.currentLocation!,
+                    LatLng(midLatitude, midLongitude),
                     zoom,
                   );
-                  log(zoom.toString());
                 }
                 setState(() {});
               },
@@ -94,10 +106,9 @@ class _FlutterMapBuilderState extends State<FlutterMapBuilder> {
                 if (zoom <= 20) {
                   zoom += 0.5;
                   getLoctionCubit.mapController.move(
-                    getLoctionCubit.currentLocation!,
+                    LatLng(midLatitude, midLongitude),
                     zoom,
                   );
-                  log(zoom.toString());
                 }
                 setState(() {});
               },
