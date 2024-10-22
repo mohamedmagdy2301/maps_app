@@ -13,12 +13,15 @@ class GetLoctionCubit extends Cubit<GetLoctionState> {
   GetLoctionCubit() : super(GetLoctionInitial());
   final MapController mapController = MapController();
 
-  Position? currentLocation;
+  LatLng? currentLocation;
   List<Marker> markers = [];
 
   Future<void> getCurrentLocation() async {
     Position userLocation = await determinePosition();
-    currentLocation = userLocation;
+    currentLocation = LatLng(
+      userLocation.latitude,
+      userLocation.longitude,
+    );
     markers.add(
       Marker(
         point: LatLng(

@@ -4,12 +4,14 @@ class RouteState {}
 
 class RouteInitial extends RouteState {}
 
-class RouteLoaded extends RouteState {}
+class DestinationRouteLoaded extends RouteState {}
 
-class RouteError extends RouteState {
-  final String message;
+class DirectionRouteLoaded extends RouteState {
+  final List<LatLng> routePoints;
 
-  RouteError(this.message);
+  DirectionRouteLoaded(this.routePoints);
 }
+
+class RouteError extends RouteState {}
 
 class ClearRouteSuccess extends RouteState {}

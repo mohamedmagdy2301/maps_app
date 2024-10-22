@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:openstreetmap/core/cubit/get_loction/get_loction_cubit.dart';
 import 'package:openstreetmap/core/cubit/route/route_cubit.dart';
 import 'package:openstreetmap/widgets/destination_data_widget.dart';
 
@@ -9,21 +10,18 @@ class InfoRouteIconBotton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var routeCubit = context.read<RouteCubit>();
-    return routeCubit.routePoints.isNotEmpty
-        ? FloatingActionButton(
-            heroTag: 'btn1',
-            mini: true,
-            backgroundColor: Colors.white,
-            onPressed: () {
-              infoRouteDialog(context, routeCubit);
-            },
-            child: const Icon(
-              Icons.location_on,
-              color: Colors.red,
-              size: 20,
-            ),
-          )
-        : const SizedBox();
+    return FloatingActionButton(
+      heroTag: 'btn1',
+      backgroundColor: Colors.white,
+      onPressed: () {
+        infoRouteDialog(context, routeCubit);
+      },
+      child: const Icon(
+        Icons.location_on,
+        color: Colors.red,
+        size: 40,
+      ),
+    );
   }
 
   Future<dynamic> infoRouteDialog(BuildContext context, RouteCubit routeCubit) {
@@ -37,12 +35,16 @@ class InfoRouteIconBotton extends StatelessWidget {
               Text("اختر الموقع"),
             ],
           ),
-          alignment: Alignment.centerRight,
+          alignment: Alignment.center,
           actionsAlignment: MainAxisAlignment.end,
           actions: [
             TextButton(
               onPressed: () {
-                routeCubit.clearRoute();
+                routeCubit.clearRoute(
+                  context,
+                  context.read<GetLoctionCubit>(),
+                  context.read<GetLoctionCubit>().markers,
+                );
               },
               child: const Text("مسح المسار"),
             ),

@@ -1,10 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:openstreetmap/core/contants.dart';
@@ -23,9 +24,44 @@ class RouteCubit extends Cubit<RouteState> {
   double duration = 0;
   double distance = 0;
   String destinationName = "";
+  LatLng? pointDestination;
 
-  Future<void> getRouteFromApi(
-    Position currentLocation,
+  Future<void> getDestinationRoute(
+    LatLng currentLocation,
+    LatLng destination,
+    List<Marker> markers,
+    MapController mapController,
+  ) async {
+    routePoints = [];
+    pointDestination = destination;
+    if (markers.length > 1) markers.removeRange(1, markers.length);
+
+    // double midLatitude = (currentLocation.latitude + destination.latitude) / 2;
+    // double midLongitude =
+    //     (currentLocation.longitude + destination.longitude) / 2;
+
+    // mapController.move(
+    //   LatLng(midLatitude, midLongitude),
+    //   getZoomLevel(),
+    // );
+    markers.add(
+      Marker(
+        point: destination,
+        alignment: Alignment.center,
+        child: const Icon(
+          Icons.location_on,
+          color: Colors.red,
+          size: 40,
+        ),
+      ),
+    );
+
+    emit(DestinationRouteLoaded());
+  }
+
+  Future<void> getDiractionesRouteFromApi(
+    BuildContext context,
+    LatLng currentLocation,
     LatLng destination,
     List<Marker> markers,
     MapController mapController,
@@ -37,6 +73,7 @@ class RouteCubit extends Cubit<RouteState> {
         '${currentLocation.latitude}&end=${destination.longitude},${destination.latitude}',
       ),
     );
+    getDestinationRoute(currentLocation, destination, markers, mapController);
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body)['features'][0];
@@ -51,34 +88,15 @@ class RouteCubit extends Cubit<RouteState> {
         key: historyKey,
         value: historyMarkers,
       );
-      //! for current location and destination marker only
-      if (markers.length > 1) markers.removeRange(1, markers.length);
 
-      double midLatitude =
-          (currentLocation.latitude + destination.latitude) / 2;
-      double midLongitude =
-          (currentLocation.longitude + destination.longitude) / 2;
-
-      mapController.move(
-        LatLng(midLatitude, midLongitude),
-        getZoomLevel(),
-      );
-
-      markers.add(
-        Marker(
-          point: destination,
-          alignment: Alignment.center,
-          child: const Icon(
-            Icons.location_on,
-            color: Colors.red,
-            size: 30,
-          ),
+      emit(DirectionRouteLoaded(routePoints));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to fetch route data'),
         ),
       );
-
-      emit(RouteLoaded());
-    } else {
-      emit(RouteError('Failed to fetch route data'));
+      emit(RouteError());
     }
   }
 
@@ -104,29 +122,29 @@ class RouteCubit extends Cubit<RouteState> {
     } else if (distance > 70000) {
       zoomLevel = 7.5;
     } else if (distance > 65000) {
-      zoomLevel = 8;
+      zoomLevel = 6;
     } else if (distance > 60000) {
-      zoomLevel = 8.5;
+      zoomLevel = 6.5;
     } else if (distance > 55000) {
-      zoomLevel = 9;
+      zoomLevel = 7;
     } else if (distance > 50000) {
-      zoomLevel = 9.5;
+      zoomLevel = 7.5;
     } else if (distance > 45000) {
-      zoomLevel = 10;
+      zoomLevel = 8;
     } else if (distance > 40000) {
-      zoomLevel = 10.5;
+      zoomLevel = 8.5;
     } else if (distance > 35000) {
-      zoomLevel = 11;
+      zoomLevel = 9;
     } else if (distance > 30000) {
-      zoomLevel = 11.5;
+      zoomLevel = 9.5;
     } else if (distance > 25000) {
-      zoomLevel = 12;
+      zoomLevel = 10;
     } else if (distance > 20000) {
-      zoomLevel = 12.5;
+      zoomLevel = 11;
     } else if (distance > 15000) {
-      zoomLevel = 13;
+      zoomLevel = 12;
     } else if (distance > 10000) {
-      zoomLevel = 13.5;
+      zoomLevel = 13;
     } else if (distance > 5000) {
       zoomLevel = 14;
     } else {
@@ -136,8 +154,21 @@ class RouteCubit extends Cubit<RouteState> {
     return zoomLevel;
   }
 
-  clearRoute() {
+  clearRoute(
+    BuildContext context,
+    GetLoctionCubit getLoctionCubit,
+    List<Marker> markers,
+  ) {
     routePoints.clear();
+    if (markers.length > 1) markers.removeRange(1, markers.length);
+    Navigator.pop(context);
+    getLoctionCubit.mapController.move(
+      LatLng(
+        getLoctionCubit.currentLocation!.latitude,
+        getLoctionCubit.currentLocation!.longitude,
+      ),
+      15,
+    );
     emit(ClearRouteSuccess());
   }
 }

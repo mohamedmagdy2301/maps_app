@@ -44,7 +44,7 @@ class _SearchFormState extends State<SearchForm> {
       listener: (context, state) {
         if (state is SearchSuccess) {
           Navigator.pop(context);
-          context.read<RouteCubit>().getRouteFromApi(
+          context.read<RouteCubit>().getDestinationRoute(
                 context.read<GetLoctionCubit>().currentLocation!,
                 context.read<SearchCubit>().destination!,
                 context.read<GetLoctionCubit>().markers,

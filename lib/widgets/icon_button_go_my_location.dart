@@ -12,7 +12,6 @@ class IconButtonGoMyLocation extends StatelessWidget {
     return FloatingActionButton(
       heroTag: 'currentLocation',
       backgroundColor: Colors.white,
-      mini: true,
       onPressed: () {
         if (getLoctionCubit.currentLocation != null) {
           getLoctionCubit.mapController.move(
@@ -27,7 +26,7 @@ class IconButtonGoMyLocation extends StatelessWidget {
       child: const Icon(
         Icons.my_location,
         color: Colors.blue,
-        size: 20,
+        size: 40,
       ),
     );
   }

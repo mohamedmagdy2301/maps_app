@@ -6,6 +6,4 @@ final class GetLoctionInitial extends GetLoctionState {}
 
 final class GetLoctionSuccess extends GetLoctionState {}
 
-final class GetLoctionLoading extends GetLoctionState {}
-
 final class GetLoctionError extends GetLoctionState {}
