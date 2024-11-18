@@ -37,6 +37,7 @@ class SearchForm extends StatefulWidget {
 
 class _SearchFormState extends State<SearchForm> {
   final TextEditingController _controller = TextEditingController();
+  List _suggestions = [];
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +52,10 @@ class _SearchFormState extends State<SearchForm> {
                 context.read<GetLoctionCubit>().mapController,
               );
           log(context.read<SearchCubit>().destination.toString());
+        } else if (state is SearchSuggestions) {
+          setState(() {
+            _suggestions = state.suggestions;
+          });
         }
       },
       child: Padding(
@@ -73,67 +78,58 @@ class _SearchFormState extends State<SearchForm> {
                 ),
                 prefixIcon: const Icon(Icons.location_on),
               ),
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  context.read<SearchCubit>().fetchSuggestions(value);
+                } else {
+                  setState(() {
+                    _suggestions = [];
+                  });
+                }
+              },
               onSubmitted: (value) {
                 if (_controller.text.isNotEmpty) {
                   log(_controller.text.toString());
-                  context.read<SearchCubit>().searchPlace(_controller.text);
+                  Navigator.pop(context);
+                  context.read<RouteCubit>().getDestinationRoute(
+                        context.read<GetLoctionCubit>().currentLocation!,
+                        context.read<SearchCubit>().destination!,
+                        context.read<GetLoctionCubit>().markers,
+                        context.read<GetLoctionCubit>().mapController,
+                      );
                 }
               },
             ),
             const SizedBox(height: 16.0),
+            if (_suggestions.isNotEmpty)
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _suggestions.length,
+                  itemBuilder: (context, index) {
+                    final suggestion = _suggestions[index];
+                    final displayName = suggestion['display_name'];
+                    return ListTile(
+                      title: Text(displayName),
+                      onTap: () {
+                        _controller.text = displayName;
+                        setState(() {
+                          _suggestions = [];
+                        });
+                        Navigator.pop(context);
+                        context.read<RouteCubit>().getDestinationRoute(
+                              context.read<GetLoctionCubit>().currentLocation!,
+                              context.read<SearchCubit>().destination!,
+                              context.read<GetLoctionCubit>().markers,
+                              context.read<GetLoctionCubit>().mapController,
+                            );
+                      },
+                    );
+                  },
+                ),
+              ),
           ],
         ),
       ),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //   builder: (context, state) {
-          //     // if (state is SearchSuccess) {
-          //     // } else if (state is SearchSuggestions) {
-          //     //   _suggestions = state.suggestions;
-          //     // }
-          //     // if (_suggestions.isNotEmpty) {
-          //     //   return Expanded(
-          //     //     child: ListView.builder(
-          //     //       itemCount: _suggestions.length,
-          //     //       itemBuilder: (context, index) {
-          //     //         final suggestion = _suggestions[index];
-          //     //         final displayName = suggestion['display_name'];
-          //     //         return ListTile(
-          //     //           title: Text(displayName),
-          //     //           onTap: () {
-          //     //             _controller.text = displayName;
-          //     //             _suggestions = [];
-          //     //             context.read<SearchCubit>().searchPlace(displayName);
-          //     //           },
-          //     //         );
-          //     //       },
-          //     //     ),
-          //     //   );
-          //     // }
-          //     return const SizedBox();
-          //   },
-          // ),
-        

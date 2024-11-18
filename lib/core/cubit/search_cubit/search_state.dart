@@ -7,7 +7,7 @@ class SearchInitial extends SearchState {}
 class SearchSuccess extends SearchState {}
 
 class SearchSuggestions extends SearchState {
-  final List<dynamic> suggestions;
+  final List suggestions;
 
   SearchSuggestions({required this.suggestions});
 }
