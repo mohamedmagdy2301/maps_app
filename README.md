@@ -8,7 +8,7 @@
 <br clear="both">
 
 ## Overview
-This `**تطيبق الخريطه**` is a Flutter application that integrates OpenStreetMap functionality to provide location tracking, route directions, search features, and history management. It uses the **flutter_bloc** package to implement state management and provides a user-friendly interface for navigating maps and viewing routes.
+This **`تطيبق الخريطه`** is a Flutter application that integrates OpenStreetMap functionality to provide location tracking, route directions, search features, and history management. It uses the **flutter_bloc** package to implement state management and provides a user-friendly interface for navigating maps and viewing routes.
 
 [![Flutter Version](https://img.shields.io/badge/Flutter-v3.0-blue.svg)](https://flutter.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -129,7 +129,7 @@ Contributions are welcome! Feel free to submit a Pull Request with improvements,
 
 ## Congratulations
 
-You’ve successfully integrated `**تطيبق الخريطه**` into your Flutter app! For more advanced features and customization options.
+You’ve successfully integrated **`تطيبق الخريطه`** into your Flutter app! For more advanced features and customization options.
 
 If you found this guide helpful, don’t forget to ⭐ star this repository on GitHub to show your support!
 
