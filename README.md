@@ -26,9 +26,13 @@ This `**تطيبق الخريطه**` is a Flutter application that integrates Op
 
 ## Screenshots
 
-| Current Location Screen | Destination Location Screen | Directions Route Screen | Search Maps Screen |
+| Permission Maps Screen | Current Location Screen | Destination Location Screen | Directions Route Screen |
 |---|---|---|---|
-| ![Screenshot](assets/screenshots/splash.png) | ![Screenshot](assets/screenshots/emptyNotse.png) | ![Screenshot](assets/screenshots/view_notes.png)  | ![Screenshot](assets/screenshots/edit_notes.png)  |
+| ![Screenshot](assets/screenshots/premisions.png) | ![Screenshot](assets/screenshots/currant.png) | ![Screenshot](assets/screenshots/diestation.png)  | ![Screenshot](assets/screenshots/directoins.png)  |
+
+| Info Location Screen | Search Location Screen |  No History Screen |  History Locations Screen |
+|---|---|---|---|
+| ![Screenshot](assets/screenshots/info.png) | ![Screenshot](assets/screenshots/search.png) | ![Screenshot](assets/screenshots/no-history.png)  | ![Screenshot](assets/screenshots/history.png)  |
 
 ---
 
