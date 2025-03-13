@@ -48,6 +48,8 @@ This **`تطيبق الخريطه`** is a Flutter application that integrates Op
     flutter_bloc: ^8.1.1
     flutter_map: ^5.0.0
     latlong2: ^0.8.1
+    geolocator: ^13.0.1
+    geocoding: ^3.0.0
     shared_preferences: ^2.0.15
   ```
 
